@@ -44,6 +44,7 @@ export default {
         id: 0,
         title: '',
         content: '',
+        created_by: '',
         action: '',
       },
     }
@@ -77,6 +78,7 @@ export default {
       }
       this.form.id = 0;
       this.form.title = '';
+      this.form.created_by = '';
       this.form.content = '';
     },
     handleSubmit(e){
@@ -84,6 +86,9 @@ export default {
       if (this.status === 'add') {
         const d = new Date()
         this.form.id = d.getTime()
+
+        this.form.created_by = this.user.name;
+
         this.addArticle(this.form)
 
         this.flashMessage.success({

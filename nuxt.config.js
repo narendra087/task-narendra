@@ -15,6 +15,7 @@ export default {
     ]
   },
   css: [
+    '~/assets/css/global.css',
   ],
   plugins: [
     { src: '~/plugins/persistedState.client.js'},

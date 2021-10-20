@@ -9,7 +9,7 @@
     </b-card>
     <br>
     <b-card class="user-card" header="Article Data">
-      <p v-if="!articles || !articles.length" class="loading-user">No Article Found</p>
+      <p v-if="!articles || !articles.length" class="loading-user mb-3">No Article Found</p>
       <div v-else class="wrapper-article">
         <b-table striped hover :items="articles">
           <template #cell(action)="row">

@@ -71,9 +71,17 @@ export default {
       e.preventDefault()
       const res = await authLogin(this.form)
       if (res) {
-        console.log(res)
         this.setToken(res.data.data.token)
+        this.flashMessage.success({
+          title: 'Login Successfully',
+          message: 'Welcome to Article Dashboard'
+        });
         this.$router.push('/dashboard')
+      } else {
+        this.flashMessage.error({
+          title: 'Failed Login',
+          message: 'Wrong Username or Password'
+        });
       }
       // await this.$axios.$post(`${this.apiPath}/auths/login`, {
       //   ...this.form

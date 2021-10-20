@@ -36,7 +36,6 @@
     <b-card v-if="openForm" class="user-card" :header="`${openForm} Article Form`">
       <Form @toggle-form=toggleForm :editedData=editedData :openForm="openForm" />
     </b-card>
-    <FlashMessage></FlashMessage>
   </div>
 </template>
 
@@ -71,6 +70,10 @@ export default {
   },
   mounted(){
     if (!this.token && (localStorage && !localStorage.token)) {
+      this.flashMessage.error({
+        title: 'Session Expired',
+        message: 'Your login session is expired, please re-login.'
+      });
       this.$router.push('/')
     }
     this.handleUser()

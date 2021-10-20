@@ -32,7 +32,6 @@
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
     <b-button @click="handleCancel" variant="secondary" class="single-button mt-2">Cancel</b-button>
-    <FlashMessage></FlashMessage>
   </div>
 </template>
 <script>
@@ -51,7 +50,7 @@ export default {
   },
   props: {
     editedData: Object,
-    status: String,
+    openForm: String,
   },
   computed: {
     ...mapGetters({
@@ -65,6 +64,13 @@ export default {
       Object.assign(this.form, this.editedData)
     } else {
       this.handleReset()
+    }
+  },
+  watch: {
+    editedData(val){
+      if (val) {
+        Object.assign(this.form, this.editedData)
+      }
     }
   },
   methods: {
@@ -83,21 +89,19 @@ export default {
     },
     handleSubmit(e){
       e.preventDefault()
-      if (this.status === 'add') {
+      if (this.openForm === 'Add') {
         const d = new Date()
         this.form.id = d.getTime()
-
         this.form.created_by = this.user.name;
 
         this.addArticle(this.form)
 
         this.flashMessage.success({
           title: 'Article Added',
-          message: `Article '${this.form.title}'' successfully added`
+          message: `Article '${this.form.title}' successfully added`
         });
       } else {
         this.editArticle(this.form)
-        this.$emit('remove-data')
 
         this.flashMessage.info({
           title: 'Article Updated',
@@ -108,7 +112,7 @@ export default {
       this.handleCancel()
     },
     handleCancel(){
-      this.$emit('toggle-form', false)
+      this.$emit('toggle-form', '')
     }
   }
 }

@@ -1,6 +1,9 @@
 p {
   margin: 0;
 }
+.pointer {
+  cursor: pointer;
+}
 ._vue-flash-msg-body {
   padding: 20px;
 }

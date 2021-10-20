@@ -1,7 +1,10 @@
 <template>
-  <div class="pg-dashboard">
+  <div class="pg-dashboard p-5">
     <b-card class="user-card" header="User Data">
-      <p v-if="isLoading" class="loading-user">Fetching Data...</p>
+      <div v-if="isLoading" class="wrapper-user">
+        <b-skeleton animation="wave" width="35%"></b-skeleton>
+        <b-skeleton animation="wave" width="50%"></b-skeleton>
+      </div>
       <div v-else class="wrapper-user">
         <p class="user-info name m-0">Name: {{user.name || '-'}}</p>
         <p class="user-info name m-0">Role: {{user.role || '-'}}</p>
@@ -13,22 +16,25 @@
       <div v-else class="wrapper-article">
         <b-table striped hover :items="articles">
           <template #cell(action)="row">
-            <b-button @click="handleEdit(row.item)" class="mr-2">
+            <b-button @click="$router.push(`/article/${row.item.id}`)" variant="dark" class="mr-2">
+              View Article
+            </b-button>
+            <b-button @click="handleEdit(row.item)" variant="primary" class="mr-2">
               Edit Article
             </b-button>
-            <b-button @click="handleDelete(row.item)" class="mr-2">
+            <b-button @click="handleDelete(row.item)" variant="danger" class="mr-2">
               Delete Article
             </b-button>
           </template>
         </b-table>
       </div>
       <div class="wrapper-action article-action">
-        <b-button v-if="!openForm" @click="handleAdd" type="submit" variant="primary">Add</b-button>
+        <b-button v-if="!openForm" @click="toggleForm('Add')" type="submit" variant="success">Add Article</b-button>
       </div>
     </b-card>
     <br>
-    <b-card v-if="openForm" class="user-card" :header="`Article Form (${status})`">
-      <Form @toggle-form=toggleForm @remove-data="removeData" :editedData=editedData :status="status" />
+    <b-card v-if="openForm" class="user-card" :header="`${openForm} Article Form`">
+      <Form @toggle-form=toggleForm :editedData=editedData :openForm="openForm" />
     </b-card>
     <FlashMessage></FlashMessage>
   </div>
@@ -52,8 +58,7 @@ export default {
   data() {
     return {
       isLoading: true,
-      openForm: false,
-      status: 'add',
+      openForm: '',
       editedData: null,
     }
   },
@@ -85,18 +90,13 @@ export default {
     },
     toggleForm(val){
       this.openForm = val;
-    },
-    handleAdd(){
-      this.toggleForm(true)
-      this.status = 'add'
+      if (!val) {
+        this.editedData = null;
+      }
     },
     handleEdit(data){
-      this.toggleForm(true)
-      this.status = 'edit'
+      this.toggleForm('Edit')
       this.editedData = data
-    },
-    removeData(){
-      this.editedData = null
     },
     handleDelete(data){
       this.removeArticle(data)
@@ -109,8 +109,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-  .pg-dashboard {
-    padding: 50px;
-  }
-</style>

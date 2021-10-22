@@ -6,8 +6,8 @@
         <b-skeleton animation="wave" width="50%"></b-skeleton>
       </div>
       <div v-else class="wrapper-user">
-        <p class="user-info name m-0">Name: {{user.name || '-'}}</p>
-        <p class="user-info name m-0">Role: {{user.role || '-'}}</p>
+        <p class="user-info name m-0">Name: {{user ? user.name : '-'}}</p>
+        <p class="user-info name m-0">Role: {{user ? user.role : '-'}}</p>
       </div>
     </b-card>
     <br>
